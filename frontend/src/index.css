@@ -1,8 +1,6 @@
 @import "tailwindcss";
 
-body {
-  background: yellow;
-}
+
 
 .test {
   @apply text-4xl font-bold text-blue-400 bg-yellow-200;
