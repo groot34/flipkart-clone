@@ -132,7 +132,7 @@ exports.createOrder = async (req, res, next) => {
     await client.query('ROLLBACK');
     next(error);
   } finally {
-    client.release();
+    if (client) client.release();
   }
 };
 
