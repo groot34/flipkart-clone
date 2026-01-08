@@ -1,15 +1,13 @@
 const { Pool } = require("pg");
-require("dotenv").config();
 
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
-  ssl: { rejectUnauthorized: false },
-
-  // ✅ REQUIRED for Render + Supabase
-  max: 1,                     // 🔴 MUST BE 1
-  idleTimeoutMillis: 10000,
-  connectionTimeoutMillis: 5000,
-  keepAlive: true
+  ssl: {
+    rejectUnauthorized: false
+  },
+  max: 3,                    // VERY IMPORTANT (keep small)
+  idleTimeoutMillis: 10000,  // close idle connections fast
+  connectionTimeoutMillis: 10000
 });
 
 pool.on("connect", () => {
@@ -17,7 +15,8 @@ pool.on("connect", () => {
 });
 
 pool.on("error", (err) => {
-  console.error("❌ PG Pool Error:", err);
+  console.error("❌ Unexpected DB error", err);
+  process.exit(1);
 });
 
 module.exports = pool;
